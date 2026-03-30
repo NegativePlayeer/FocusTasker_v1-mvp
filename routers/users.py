@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from schemas.user import UserCreate
 from database import DB_DEPENDENCY
 from models.user import User
+from auth import hash_password
 
 router = APIRouter()
 
@@ -11,9 +12,9 @@ async def create_user(
         db: DB_DEPENDENCY
 ):
     user_dict = user_data.model_dump()
-    password = user_dict.pop("password")
+    user_dict.pop("password")
 
-    user_model = User(**user_dict, hashed_password=password)
+    user_model = User(**user_dict, hashed_password=hash_password(user_data.password))
     db.add(user_model)
     db.commit()
     db.refresh(user_model)
