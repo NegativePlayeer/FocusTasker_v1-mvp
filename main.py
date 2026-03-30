@@ -1,20 +1,9 @@
-from typing import Annotated
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from schemas.user import UserCreate
-from database import engine, Base, SessionLocal
+from database import engine, Base, get_db, DB_DEPENDENCY
 from models.user import User
-from sqlalchemy.orm import Session
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-DB_DEPENDENCY = Annotated[Session, Depends(get_db)]
 
 @app.post("/users/")
 async def create_user(
