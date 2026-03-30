@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from schemas.user import UserCreate
-from main import DB_DEPENDENCY
+from database import DB_DEPENDENCY
 from models.user import User
 
 router = APIRouter()

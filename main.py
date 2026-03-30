@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from schemas.user import UserCreate
-from database import engine, Base, DB_DEPENDENCY
-from models.user import User
+from database import engine, Base
+from routers import users
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
+
+app.include_router(users.router)
