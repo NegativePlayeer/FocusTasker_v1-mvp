@@ -1,21 +1,6 @@
 from fastapi import FastAPI
 from schemas.user import UserCreate
-from database import engine, Base, get_db, DB_DEPENDENCY
+from database import engine, Base, DB_DEPENDENCY
 from models.user import User
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-
-@app.post("/users/")
-async def create_user(
-        user_data: UserCreate,
-        db: DB_DEPENDENCY
-):
-    user_dict = user_data.model_dump()
-    password = user_dict.pop("password")
-
-    user_model = User(**user_dict, hashed_password=password)
-    db.add(user_model)
-    db.commit()
-    db.refresh(user_model)
-
-    return user_model
