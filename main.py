@@ -1,9 +1,8 @@
 from typing import Annotated
 from fastapi import FastAPI, Depends
-from Routers.schemas import UserCreate
+from schemas import UserCreate
 from database import engine, Base, SessionLocal
-from Models.user import User
-from Models.task import Task, Subtask
+from models.user import User
 from sqlalchemy.orm import Session
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
