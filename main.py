@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import FastAPI, Depends
-from schemas import UserCreate
+from schemas.user import UserCreate
 from database import engine, Base, SessionLocal
 from models.user import User
 from sqlalchemy.orm import Session
