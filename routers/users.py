@@ -1,12 +1,12 @@
 from fastapi import APIRouter
-from schemas.user import UserCreate
+from schemas.user import UserCreate,UserResponse
 from database import DB_DEPENDENCY
 from models.user import User
 from auth import hash_password
 
 router = APIRouter()
 
-@router.post("/users/")
+@router.post("/users/", response_model=UserResponse)
 async def create_user(
         user_data: UserCreate,
         db: DB_DEPENDENCY
