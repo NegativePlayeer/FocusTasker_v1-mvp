@@ -1,12 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status, HTTPException
 from schemas.user import UserCreate,UserResponse
 from database import DB_DEPENDENCY
 from models.user import User
-from auth import hash_password
+from routers.auth import hash_password
 
 router = APIRouter()
 
-@router.post("/users/", response_model=UserResponse)
+@router.post("/users/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(
         user_data: UserCreate,
         db: DB_DEPENDENCY
@@ -20,3 +20,4 @@ async def create_user(
     db.refresh(user_model)
 
     return user_model
+
