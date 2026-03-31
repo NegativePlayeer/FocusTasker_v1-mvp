@@ -6,7 +6,7 @@ from auth import hash_password
 
 router = APIRouter()
 
-@router.post("/users/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/users/", response_model=UserResponse)
 async def create_user(
         user_data: UserCreate,
         db: DB_DEPENDENCY
