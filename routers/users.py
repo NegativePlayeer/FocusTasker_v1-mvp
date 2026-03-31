@@ -2,7 +2,7 @@ from fastapi import APIRouter, status, HTTPException
 from schemas.user import UserCreate,UserResponse
 from database import DB_DEPENDENCY
 from models.user import User
-from routers.auth import hash_password
+from auth import hash_password
 
 router = APIRouter()
 
