@@ -1,6 +1,5 @@
 from pydantic import BaseModel, ConfigDict
 class UserCreate(BaseModel):
-    id: int
     email: str
     username: str
     first_name: str

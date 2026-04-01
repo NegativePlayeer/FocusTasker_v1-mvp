@@ -1,5 +1,6 @@
+from fastapi import HTTPException, status
 import bcrypt
-from jose import jwt
+from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from config import settings
 
@@ -18,3 +19,13 @@ def create_access_token(data: dict) -> str:
     payload.update({"exp": expires})
 
     return jwt.encode(payload, key=settings.SECRET_API_KEY, algorithm='HS256')
+
+def verify_token(token: str) -> dict:
+    try:
+        user_token = jwt.decode(token, key=settings.SECRET_API_KEY, algorithms=['HS256'])
+        return {'username':user_token.get('sub'), 'id':user_token.get('id')}
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+
+
