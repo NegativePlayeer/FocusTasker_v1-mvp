@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from database import engine, Base
 from routers import users, auth
+from models.user import User
+from models.task import Task
+
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
 

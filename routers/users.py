@@ -1,8 +1,9 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, Depends
+from typing import Annotated
 from schemas.user import UserCreate,UserResponse
 from database import DB_DEPENDENCY
 from models.user import User
-from auth import hash_password
+from auth import hash_password, get_current_user
 
 router = APIRouter()
 
@@ -21,3 +22,11 @@ async def create_user(
 
     return user_model
 
+@router.get("/users/me", response_model=UserResponse)
+async def get_me(
+        current_user: Annotated[dict, Depends(get_current_user)],
+        db: DB_DEPENDENCY
+):
+    user_model = db.query(User).filter(User.username == current_user.get('username')).first()
+
+    return user_model

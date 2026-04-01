@@ -15,5 +15,5 @@ async def authenticate_user(
     if user_model is None or not auth.verify_password(user_data.password, user_model.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed!')
 
-    token = auth.create_access_token({'sub': user_model.username, 'id': user_model.id})
+    token = auth.create_access_token({'sub': user_model.username, 'id': user_model.id, 'role': user_model.role})
     return {'access_token': token, 'token_type': 'bearer'}
