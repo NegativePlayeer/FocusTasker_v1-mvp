@@ -6,7 +6,7 @@ from auth import USER_DEPENDENCY
 
 router = APIRouter()
 
-@router.post('/tasks/create', status_code=status.HTTP_201_CREATED)
+@router.post('/tasks/create', response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 async def create_task(
         db: DB_DEPENDENCY,
         current_user: USER_DEPENDENCY,
@@ -71,7 +71,7 @@ async def update_task(
     return task
 
 @router.post('/tasks/{task_id}/subtasks', response_model=SubtaskResponse)
-async def update_subtasks(
+async def add_subtask(
         db: DB_DEPENDENCY,
         current_user: USER_DEPENDENCY,
         subtask_request: SubtaskCreate,

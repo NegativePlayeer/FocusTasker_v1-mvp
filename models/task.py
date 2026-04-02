@@ -17,7 +17,7 @@ class Task(Base):
     priority = Column(Integer)
     is_completed = Column(Boolean, default=False)
     owner = relationship('User', back_populates='tasks')
-    subtasks = relationship('Subtask', back_populates='parent_task')
+    subtasks = relationship('Subtask', back_populates='parent_task', cascade='all, delete-orphan')
 
 class Subtask(Base):
     __tablename__ = 'subtasks'

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, HTTPException, Depends
+from fastapi import APIRouter, status, HTTPException
 from schemas.user import UserCreate,UserResponse
 from database import DB_DEPENDENCY
 from models.user import User
@@ -14,7 +14,12 @@ async def create_user(
     user_dict = user_data.model_dump()
     user_dict.pop("password")
 
+    validate_user = db.query(User).filter((User.username == user_data.username) | (User.email == user_data.email)).first()
+    if validate_user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='User already created')
+
     user_model = User(**user_dict, hashed_password=hash_password(user_data.password))
+
     db.add(user_model)
     db.commit()
     db.refresh(user_model)
