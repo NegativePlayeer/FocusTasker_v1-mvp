@@ -36,3 +36,5 @@ def get_current_user(
         token: Annotated[str, Depends(oauth2_bearer)],
 ):
     return verify_token(token)
+
+USER_DEPENDENCY = Annotated[dict, Depends(get_current_user)]
