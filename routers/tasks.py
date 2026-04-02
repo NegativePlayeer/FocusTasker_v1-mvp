@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, HTTPException
 from database import DB_DEPENDENCY
 from models.task import  Task, Subtask
-from schemas.task import TaskCreate, TaskResponse, TaskUpdate, SubtaskResponse
+from schemas.task import TaskCreate, TaskResponse, TaskUpdate, SubtaskResponse, SubtaskCreate
 from auth import USER_DEPENDENCY
 
 router = APIRouter()
@@ -69,4 +69,24 @@ async def update_task(
     db.commit()
     db.refresh(task)
     return task
+
+@router.post('/tasks/{task_id}/subtasks', response_model=SubtaskResponse)
+async def update_subtasks(
+        db: DB_DEPENDENCY,
+        current_user: USER_DEPENDENCY,
+        subtask_request: SubtaskCreate,
+        task_id: int
+):
+    task = db.query(Task).filter(Task.owner_id == current_user.get('id'), Task.id == task_id).first()
+
+    if task is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
+
+    subtask_model = Subtask(task_id=task_id, **subtask_request.model_dump())
+
+    db.add(subtask_model)
+    db.commit()
+    db.refresh(subtask_model)
+
+    return subtask_model
 
