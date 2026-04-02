@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+from typing import Optional
+from pydantic import BaseModel, ConfigDict
+
 
 class SubtaskCreate(BaseModel):
     title: str
@@ -15,6 +17,7 @@ class SubtaskResponse(BaseModel):
     id: int
     title: str
     is_completed: bool = False
+    model_config = ConfigDict(from_attributes=True)
 
 class TaskResponse(BaseModel):
     id: int
@@ -23,3 +26,11 @@ class TaskResponse(BaseModel):
     priority: int
     is_completed: bool = False
     subtasks: list[SubtaskResponse]
+
+    model_config = ConfigDict(from_attributes=True)
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    priority: Optional[int] = None
+    is_completed: Optional[bool] = None

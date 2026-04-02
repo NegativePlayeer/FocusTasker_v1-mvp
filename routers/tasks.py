@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, HTTPException
 from database import DB_DEPENDENCY
 from models.task import  Task, Subtask
-from schemas.task import TaskCreate
+from schemas.task import TaskCreate, TaskResponse, TaskUpdate, SubtaskResponse
 from auth import USER_DEPENDENCY
 
 router = APIRouter()
@@ -28,7 +28,7 @@ async def create_task(
 
     return task_model
 
-@router.get('/tasks/')
+@router.get('/tasks/', response_model=list[TaskResponse])
 async def get_all_tasks(
         db: DB_DEPENDENCY,
         current_user: USER_DEPENDENCY
@@ -36,3 +36,37 @@ async def get_all_tasks(
     tasks = db.query(Task).filter(Task.owner_id == current_user.get('id')).all()
 
     return tasks
+
+@router.delete('/tasks/{task_id}', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_task(
+        db: DB_DEPENDENCY,
+        current_user: USER_DEPENDENCY,
+        task_id : int
+):
+    task = db.query(Task).filter(Task.owner_id == current_user.get('id'), Task.id == task_id).first()
+
+    if task is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
+
+    db.delete(task)
+    db.commit()
+
+@router.put('/tasks/{task_id}', response_model=TaskResponse)
+async def update_task(
+        db: DB_DEPENDENCY,
+        current_user: USER_DEPENDENCY,
+        task_request: TaskUpdate,
+        task_id: int
+):
+    task = db.query(Task).filter(Task.owner_id == current_user.get('id'), Task.id == task_id).first()
+
+    if task is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
+
+    update_data = task_request.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(task, key, value)
+    db.commit()
+    db.refresh(task)
+    return task
+
