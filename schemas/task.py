@@ -11,4 +11,15 @@ class TaskCreate(BaseModel):
     is_completed: bool = False
     subtasks: list[SubtaskCreate] = []
 
+class SubtaskResponse(BaseModel):
+    id: int
+    title: str
+    is_completed: bool = False
 
+class TaskResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    priority: int
+    is_completed: bool = False
+    subtasks: list[SubtaskResponse]
