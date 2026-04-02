@@ -27,6 +27,6 @@ async def get_me(
         current_user: Annotated[dict, Depends(get_current_user)],
         db: DB_DEPENDENCY
 ):
-    user_model = db.query(User).filter(User.username == current_user.get('username')).first()
+    user_model = db.query(User).filter(User.id == current_user.get('id')).first()
 
     return user_model
