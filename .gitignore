@@ -3,7 +3,7 @@ __pycache__/
 *$py.class
 
 venv/
-.venv/
+backend/.venv/
 env/
 
 .env
@@ -15,3 +15,4 @@ env/
 .vscode/
 .idea/
 notes.md
+node_modules/

@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/auth.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/tasks.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routers/users.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas/user.py" beforeDir="false" />
-    </list>
+    <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,6 +42,7 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/dawid/PycharmProjects/FocusTasker/models&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\dawid\\PycharmProjects\\FocusTasker\\frontend\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -111,7 +96,7 @@
       <workItem from="1774977397874" duration="3887000" />
       <workItem from="1774988540753" duration="4489000" />
       <workItem from="1775071076066" duration="7138000" />
-      <workItem from="1775138978387" duration="12527000" />
+      <workItem from="1775138978387" duration="12889000" />
     </task>
     <servers />
   </component>
