@@ -28,7 +28,11 @@ function Dashboard() {
     const [title, setTitle] = useState<string>('Task title')
     const [description, setDescription] = useState<string>('A new task')
     const [priority, setPriority] = useState<number>(1)
-    const listTasks = tasks.map(task => <li key={task.id}>{task.title}</li>)
+    const listTasks = tasks.map(task => <li key={task.id}>
+        {task.title}
+        <Button variant='destructive' className='cursor-pointer' onClick={() => handleDeleteTask(task.id)}>Delete</Button>
+        <Button variant='secondary' className='cursor-pointer' onClick={() => handleTaskEdit(task.id)}
+    </li>)
 
     const fetchTasks = async () => {
         const token = localStorage.getItem('token')
@@ -61,6 +65,27 @@ function Dashboard() {
         }
     }
 
+    const handleDeleteTask = async (taskId: number) => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        if(response.ok){
+            await fetchTasks()
+        }
+        else {
+            console.log('Error')
+        }
+    }
+
+    const handleTaskEdit = async(taskId: number) => {
+        const token = localStorage.getItem('token ')
+    }
+
     useEffect(() => {
         void fetchTasks()
     }, [])
@@ -69,7 +94,6 @@ function Dashboard() {
         <div>
             <ul>{listTasks}</ul>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-
                     <DialogTrigger>
                         <Button variant='outline' className='cursor-pointer'>Create new task</Button>
                     </DialogTrigger>
