@@ -12,15 +12,8 @@ import {Field, FieldGroup} from "@/components/ui/field.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface Task {
-    id: number
-    title: string
-    description: string
-    priority: number
-    is_completed: boolean
-}
-
+import type { Task } from '@/types/task.ts'
+import  TaskModal  from '@/components/tasks/TaskModal.tsx'
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
@@ -28,10 +21,15 @@ function Dashboard() {
     const [title, setTitle] = useState<string>('Task title')
     const [description, setDescription] = useState<string>('A new task')
     const [priority, setPriority] = useState<number>(1)
-    const listTasks = tasks.map(task => <li key={task.id}>
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false)
+    const listTasks = tasks.map(task => <li className='cursor-pointer' key={task.id} onClick={() => {
+        setSelectedTask(task);
+        setIsTaskModalOpen(true)
+    }}>
         {task.title}
-        <Button variant='destructive' className='cursor-pointer' onClick={() => handleDeleteTask(task.id)}>Delete</Button>
-        <Button variant='secondary' className='cursor-pointer' onClick={() => handleTaskEdit(task.id)}
+        {/*<Button variant='destructive' className='cursor-pointer' onClick={() => handleDeleteTask(task.id)}>Delete</Button>*/}
+        {/*<Button variant='secondary' className='cursor-pointer' onClick={() => handleTaskEdit(task.id)}*/}
     </li>)
 
     const fetchTasks = async () => {
@@ -65,26 +63,26 @@ function Dashboard() {
         }
     }
 
-    const handleDeleteTask = async (taskId: number) => {
-        const token = localStorage.getItem('token')
-        const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
+    // const handleDeleteTask = async (taskId: number) => {
+    //     const token = localStorage.getItem('token')
+    //     const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     })
+    //
+    //     if(response.ok){
+    //         await fetchTasks()
+    //     }
+    //     else {
+    //         console.log('Error')
+    //     }
+    // }
 
-        if(response.ok){
-            await fetchTasks()
-        }
-        else {
-            console.log('Error')
-        }
-    }
-
-    const handleTaskEdit = async(taskId: number) => {
-        const token = localStorage.getItem('token ')
-    }
+    // const handleTaskEdit = async(taskId: number) => {
+    //     const token = localStorage.getItem('token ')
+    // }
 
     useEffect(() => {
         void fetchTasks()
@@ -146,6 +144,12 @@ function Dashboard() {
                         </form>
                     </DialogContent>
             </Dialog>
+            {selectedTask && (
+                <TaskModal
+                    task={selectedTask}
+                    isOpen={isTaskModalOpen}
+                    onClose={() => setIsTaskModalOpen(false)} />
+            )}
         </div>
     )
 }

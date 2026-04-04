@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/task.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/label.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/frontend/src/lib/utils.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/ui/dialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ui/dialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/ui/field.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ui/field.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/ui/select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ui/select.tsx" afterDir="false" />
@@ -20,8 +27,8 @@
         <option value="FastAPI main" />
         <option value="FastAPI test_main" />
         <option value="Python Script" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -63,6 +70,7 @@
       <recent name="C:\Users\dawid\PycharmProjects\FocusTasker\routers" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dawid\PycharmProjects\FocusTasker\frontend\src" />
       <recent name="C:\Users\dawid\PycharmProjects\FocusTasker" />
       <recent name="C:\Users\dawid\PycharmProjects\FocusTasker\routers" />
       <recent name="C:\Users\dawid\PycharmProjects\FocusTasker\schemas" />
