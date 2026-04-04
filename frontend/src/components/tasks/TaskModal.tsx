@@ -17,9 +17,11 @@ interface TaskModalProps {
     task: Task
     isOpen: boolean
     onClose: () => void
+    onDelete: (taskId: number) => void
+    onEdit: (task: Task) => void
 }
 
-function TaskModal({task, isOpen, onClose}: TaskModalProps){
+function TaskModal({task, isOpen, onClose, onDelete, onEdit}: TaskModalProps){
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
@@ -29,8 +31,8 @@ function TaskModal({task, isOpen, onClose}: TaskModalProps){
                 </DialogHeader>
                 <p>Priority: {task.priority}</p>
                 <DialogFooter>
-                    <Button variant='destructive' className='cursor-pointer'>Delete</Button>
-                    <Button className='cursor-pointer'>Edit</Button>
+                    <Button variant='destructive' className='cursor-pointer' onClick={()=> onDelete(task.id)}>Delete</Button>
+                    <Button className='cursor-pointer' onClick={() => onEdit(task)}>Edit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

@@ -1,28 +1,16 @@
-import React,{useEffect, useState} from "react";
-import { Button } from "@/components/ui/button"
-import {
-    Dialog, DialogClose,
-    DialogContent,
-    DialogDescription, DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog.tsx";
-import {Field, FieldGroup} from "@/components/ui/field.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {useEffect, useState} from "react";
 import type { Task } from '@/types/task.ts'
 import  TaskModal  from '@/components/tasks/TaskModal.tsx'
+import {Button} from "@/components/ui/button.tsx";
+import TaskForm from "@/components/tasks/TaskForm.tsx";
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [title, setTitle] = useState<string>('Task title')
-    const [description, setDescription] = useState<string>('A new task')
-    const [priority, setPriority] = useState<number>(1)
     const [selectedTask, setSelectedTask] = useState<Task | null>(null)
     const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false)
+    const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
+    const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
     const listTasks = tasks.map(task => <li className='cursor-pointer' key={task.id} onClick={() => {
         setSelectedTask(task);
         setIsTaskModalOpen(true)
@@ -44,8 +32,7 @@ function Dashboard() {
         setTasks(data)
     }
 
-    const handleTaskCreating = async (e: React.BaseSyntheticEvent) => {
-        e.preventDefault()
+    const handleTaskCreating = async (title: string, description: string, priority: number) => {
         const token = localStorage.getItem('token')
         const response = await fetch('http://localhost:8000/tasks/create', {
             method: 'POST',
@@ -58,31 +45,51 @@ function Dashboard() {
         if(response.ok){
             setIsOpen(false)
             await fetchTasks()
-        }else{
+        }
+    }
+
+    const handleDeleteTask = async (taskId: number) => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        if(response.ok){
+            await fetchTasks()
+            setIsTaskModalOpen(false)
+        }
+        else {
             console.log('Error')
         }
     }
 
-    // const handleDeleteTask = async (taskId: number) => {
-    //     const token = localStorage.getItem('token')
-    //     const response = await fetch(`http://localhost:8000/tasks/${taskId}`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Authorization': `Bearer ${token}`
-    //         }
-    //     })
-    //
-    //     if(response.ok){
-    //         await fetchTasks()
-    //     }
-    //     else {
-    //         console.log('Error')
-    //     }
-    // }
+    const handleOpenEdit = (task: Task) => {
+        setIsTaskModalOpen(false)
+        setTaskToEdit(task)
+        setIsEditOpen(true)
+    }
 
-    // const handleTaskEdit = async(taskId: number) => {
-    //     const token = localStorage.getItem('token ')
-    // }
+    const handleTaskEdit = async(title: string, description: string, priority: number) => {
+        if(!taskToEdit) return
+
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/tasks/${taskToEdit.id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({title, description, priority})
+        })
+
+        if(response.ok){
+            setIsEditOpen(false)
+            await fetchTasks()
+        }
+    }
 
     useEffect(() => {
         void fetchTasks()
@@ -91,65 +98,28 @@ function Dashboard() {
     return (
         <div>
             <ul>{listTasks}</ul>
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                    <DialogTrigger>
-                        <Button variant='outline' className='cursor-pointer'>Create new task</Button>
-                    </DialogTrigger>
-                    <DialogContent className='sm:max-w-sm'>
-                        <form onSubmit={handleTaskCreating}>
-                            <DialogHeader>
-                                <DialogTitle>New task</DialogTitle>
-                                <DialogDescription>
-                                    Create a new task :D
-                                </DialogDescription>
-                            </DialogHeader>
-                            <FieldGroup>
-                                <Field>
-                                    <Label htmlFor="title-1">Title</Label>
-                                    <Input
-                                        id='title-1'
-                                        name='title'
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                    />
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="description-1">Title</Label>
-                                    <Input
-                                        id='description-1'
-                                        name='description'
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                    />
-                                </Field>
-                                <Field>
-                                    <Select onValueChange={(value) => setPriority(Number(value))} required>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Select priority" />
-                                      </SelectTrigger>
-                                      <SelectContent>
-                                        <SelectItem value="1">1 - Do it as fast as possible!</SelectItem>
-                                        <SelectItem value="2">2 - Do not waste to much time!</SelectItem>
-                                        <SelectItem value="3">3 - Well, do it later</SelectItem>
-                                      </SelectContent>
-                                    </Select>
-                                </Field>
-                            </FieldGroup>
-                            <DialogFooter>
-                                <DialogClose asChild>
-                                    <Button variant='outline'>Cancel</Button>
-                                </DialogClose>
-                                <Button type='submit'>Save changes</Button>
-                            </DialogFooter>
-                        </form>
-                    </DialogContent>
-            </Dialog>
+            <Button onClick={()=>setIsOpen(true)} className='cursor-pointer'>Create a new task</Button>
+            <TaskForm isOpen={isOpen} onClose={() => setIsOpen(false)} onCreate={handleTaskCreating} />
             {selectedTask && (
                 <TaskModal
                     task={selectedTask}
                     isOpen={isTaskModalOpen}
-                    onClose={() => setIsTaskModalOpen(false)} />
+                    onClose={() => setIsTaskModalOpen(false)}
+                    onDelete={handleDeleteTask}
+                    onEdit={handleOpenEdit}
+                />
             )}
+
+            {taskToEdit && (
+                <TaskForm
+                    key={taskToEdit.id}
+                    task={taskToEdit}
+                    isOpen={isEditOpen}
+                    onClose={() => setIsEditOpen(false)}
+                    onCreate={handleTaskEdit}
+                />
+            )}
+
         </div>
     )
 }

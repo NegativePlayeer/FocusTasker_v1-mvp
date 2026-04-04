@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskForm.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskModal.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/types/task.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -27,8 +28,8 @@
         <option value="FastAPI main" />
         <option value="FastAPI test_main" />
         <option value="Python Script" />
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -120,6 +121,7 @@
       <workItem from="1775241692235" duration="5081000" />
       <workItem from="1775246866044" duration="4811000" />
       <workItem from="1775294713847" duration="996000" />
+      <workItem from="1775326150735" duration="7672000" />
     </task>
     <servers />
   </component>
