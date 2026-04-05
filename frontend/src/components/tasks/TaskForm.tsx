@@ -38,7 +38,7 @@ function TaskForm({task, isOpen, onClose, onCreate}:TaskFormProps){
                     setPriority(2)
                 }}>
                     <DialogHeader>
-                        <DialogTitle>New task</DialogTitle>
+                        <DialogTitle>{task ? 'Edit task' : 'New task'}</DialogTitle>
                         <DialogDescription>
                             Create a new task :D
                         </DialogDescription>

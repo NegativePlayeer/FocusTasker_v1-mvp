@@ -85,8 +85,10 @@ function Dashboard() {
             body: JSON.stringify({title, description, priority})
         })
 
+        const updated = await response.json()
         if(response.ok){
             setIsEditOpen(false)
+            setTaskToEdit(updated)
             await fetchTasks()
         }
     }
@@ -112,7 +114,7 @@ function Dashboard() {
 
             {taskToEdit && (
                 <TaskForm
-                    key={taskToEdit.id}
+                    key={`${taskToEdit.id}-${isEditOpen}`}
                     task={taskToEdit}
                     isOpen={isEditOpen}
                     onClose={() => setIsEditOpen(false)}
