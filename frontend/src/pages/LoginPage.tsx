@@ -48,7 +48,7 @@ function LoginPage() {
           Enter your username below to login to your account
         </CardDescription>
         <CardAction>
-          <Button variant="link">Sign Up</Button>
+          <Button variant="link" onClick={() => navigate('/signup')}>Sign Up</Button>
         </CardAction>
       </CardHeader>
       <CardContent>
