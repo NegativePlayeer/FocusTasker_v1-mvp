@@ -6,7 +6,6 @@
       <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskModal.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/pages/SignUpPage.tsx" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/src/types/task.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/button.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/card.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/frontend/src/components/ui/input.tsx" beforeDir="false" />

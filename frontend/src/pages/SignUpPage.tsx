@@ -10,14 +10,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import {useState} from "react";
+import React, {useState} from "react";
 import { useNavigate } from 'react-router-dom'
-
-
-
-
-
-
 
 function SignUpPage(){
     const navigate = useNavigate()
@@ -28,13 +22,11 @@ function SignUpPage(){
     const [password, setPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
 
-
-
     const checkPassword = (password: string, rePassword: string): boolean => {
         return password == rePassword;
     }
 
-    const handleSignUp = async (e: React.BaseSyntheticEvent) => {
+    const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault()
         if(!checkPassword(password, confirmPassword)){
             console.log('wrong password')
@@ -47,11 +39,9 @@ function SignUpPage(){
             body: JSON.stringify({ email, first_name: firstname, surname, username, password, role: 'user' })
         })
 
-
         if(response.ok){
             navigate('/login')
         }
-
     }
 
     return (
@@ -139,5 +129,4 @@ function SignUpPage(){
         </div>
     )
 }
-
 export default SignUpPage

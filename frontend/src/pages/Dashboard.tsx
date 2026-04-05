@@ -19,8 +19,6 @@ function Dashboard() {
         setIsTaskModalOpen(true)
     }}>
         {task.title}
-        {/*<Button variant='destructive' className='cursor-pointer' onClick={() => handleDeleteTask(task.id)}>Delete</Button>*/}
-        {/*<Button variant='secondary' className='cursor-pointer' onClick={() => handleTaskEdit(task.id)}*/}
     </li>)
 
     const fetchTasks = async () => {
@@ -31,8 +29,11 @@ function Dashboard() {
                 'Authorization': `Bearer ${token}`
             }
         })
-        const data = await response.json()
-        setTasks(data)
+
+        if(response.ok){
+            const data = await response.json()
+            setTasks(data)
+        }
     }
 
     const handleTaskCreating = async (title: string, description: string, priority: number) => {
@@ -88,10 +89,8 @@ function Dashboard() {
             body: JSON.stringify({title, description, priority})
         })
 
-        const updated = await response.json()
         if(response.ok){
             setIsEditOpen(false)
-            setTaskToEdit(updated)
             await fetchTasks()
         }
     }

@@ -58,7 +58,7 @@ function LoginPage() {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                type="username"
+                type="text"
                 placeholder="Hello username..."
                 required
                 className="cursor-pointer"

@@ -40,7 +40,7 @@ function TaskForm({task, isOpen, onClose, onCreate}:TaskFormProps){
                     <DialogHeader>
                         <DialogTitle>{task ? 'Edit task' : 'New task'}</DialogTitle>
                         <DialogDescription>
-                            Create a new task :D
+                            {task ? 'Update your task details.' : 'Create a new task :D'}
                         </DialogDescription>
                     </DialogHeader>
                     <FieldGroup>
