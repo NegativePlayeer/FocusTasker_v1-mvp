@@ -3,6 +3,7 @@ import type { Task } from '@/types/task.ts'
 import  TaskModal  from '@/components/tasks/TaskModal.tsx'
 import {Button} from "@/components/ui/button.tsx";
 import TaskForm from "@/components/tasks/TaskForm.tsx";
+import { useNavigate} from "react-router-dom";
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
@@ -11,6 +12,8 @@ function Dashboard() {
     const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false)
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
     const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
+    const navigate = useNavigate()
+
     const listTasks = tasks.map(task => <li className='cursor-pointer' key={task.id} onClick={() => {
         setSelectedTask(task);
         setIsTaskModalOpen(true)
@@ -93,6 +96,11 @@ function Dashboard() {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
+
     useEffect(() => {
         void fetchTasks()
     }, [])
@@ -121,7 +129,7 @@ function Dashboard() {
                     onCreate={handleTaskEdit}
                 />
             )}
-
+            <Button variant='destructive' onClick={handleLogout}>Log out</Button>
         </div>
     )
 }
