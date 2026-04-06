@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from database import engine, Base
-from routers import users, auth, tasks
+from routers import users, auth, tasks, ai_features
 from fastapi.middleware.cors import CORSMiddleware
 from models.user import User
 from models.task import Task, Subtask
@@ -18,3 +18,4 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(tasks.router)
+app.include_router(ai_features.router)
