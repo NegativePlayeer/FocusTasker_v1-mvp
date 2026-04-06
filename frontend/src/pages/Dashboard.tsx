@@ -3,7 +3,11 @@ import type { Task } from '@/types/task.ts'
 import  TaskModal  from '@/components/tasks/TaskModal.tsx'
 import {Button} from "@/components/ui/button.tsx";
 import TaskForm from "@/components/tasks/TaskForm.tsx";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from '@/hooks/useTheme.ts'
+import Navbar from "@/components/layout/Navbar.tsx";
+import {motion} from "framer-motion";
+import TaskCard from "@/components/tasks/TaskCard.tsx";
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
@@ -12,14 +16,9 @@ function Dashboard() {
     const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false)
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
     const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
+    const { isDark, toggle } = useTheme()
     const navigate = useNavigate()
 
-    const listTasks = tasks.map(task => <li className='cursor-pointer' key={task.id} onClick={() => {
-        setSelectedTask(task);
-        setIsTaskModalOpen(true)
-    }}>
-        {task.title}
-    </li>)
 
     const fetchTasks = async () => {
         const token = localStorage.getItem('token')
@@ -105,10 +104,27 @@ function Dashboard() {
     }, [])
 
     return (
-        <div>
-            <ul>{listTasks}</ul>
-            <Button onClick={()=>setIsOpen(true)} className='cursor-pointer'>Create a new task</Button>
-            <TaskForm isOpen={isOpen} onClose={() => setIsOpen(false)} onCreate={handleTaskCreating} />
+        <div className='min-h-screen bg-background'>
+            <Navbar isDark={isDark} onToggleTheme={toggle} onLogout={handleLogout}/>
+            <main className="p-8">
+                <div className="flex items-center justify-between mb-6">
+                    <h1 className="text-2xl font-bold text-foreground!">My tasks</h1>
+                    <Button onClick={() => setIsOpen(true)}>New task</Button>
+                </div>
+                <motion.div
+                    className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                >
+                    {tasks.map(task => (
+                        <TaskCard key={task.id} task={task} onClick={() => {
+                        setSelectedTask(task)
+                        setIsTaskModalOpen(true)
+                        }} />
+                    ))}
+                </motion.div>
+            </main>
+            <TaskForm isOpen={isOpen} onClose={() => setIsOpen(false)} onCreate={handleTaskCreating}/>
             {selectedTask && (
                 <TaskModal
                     task={selectedTask}
@@ -128,7 +144,6 @@ function Dashboard() {
                     onCreate={handleTaskEdit}
                 />
             )}
-            <Button variant='destructive' onClick={handleLogout}>Log out</Button>
         </div>
     )
 }

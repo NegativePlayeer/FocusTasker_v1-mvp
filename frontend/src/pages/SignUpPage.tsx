@@ -45,7 +45,7 @@ function SignUpPage(){
     }
 
     return (
-        <div>
+        <div className="min-h-screen bg-background flex items-center justify-center">
             <Card className='w-full max-w-sm'>
                 <CardHeader>
                     <CardTitle>Sign up to discover new you!</CardTitle>
