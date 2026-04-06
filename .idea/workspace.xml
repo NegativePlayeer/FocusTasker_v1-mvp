@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routers/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routers/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Hooks/useTheme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useTheme.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/tasks/TaskForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskForm.tsx" afterDir="false" />
@@ -32,7 +31,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/frontend" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -53,7 +52,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/dawid/PycharmProjects/FocusTasker/models",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
