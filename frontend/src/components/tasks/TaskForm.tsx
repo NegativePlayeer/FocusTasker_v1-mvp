@@ -29,48 +29,54 @@ function TaskForm({task, isOpen, onClose, onCreate}:TaskFormProps){
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className='sm:max-w-sm'>
+            <DialogContent className='sm:max-w-md'>
                 <form onSubmit={(e) => {
                     e.preventDefault()
                     onCreate(title, description, priority)
                     setTitle('')
                     setDescription('')
-                    setPriority(2)
+                    setPriority(1)
                 }}>
                     <DialogHeader>
-                        <DialogTitle>{task ? 'Edit task' : 'New task'}</DialogTitle>
+                        <DialogTitle className="text-xl text-foreground!">{task ? 'Edit task' : 'New task'}</DialogTitle>
                         <DialogDescription>
-                            {task ? 'Update your task details.' : 'Create a new task :D'}
+                            {task ? 'Update your task details.' : 'Fill in the details below.'}
                         </DialogDescription>
                     </DialogHeader>
-                    <FieldGroup>
+                    <FieldGroup className="py-4 flex flex-col gap-4">
                         <Field>
-                            <Label htmlFor="title-1">Title</Label>
+                            <Label htmlFor="title-1" className="font-medium">Title</Label>
                             <Input
                                 id='title-1'
                                 name='title'
                                 value={title}
+                                placeholder="Task title..."
+                                className="mt-1"
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                         </Field>
                         <Field>
-                            <Label htmlFor="description-1">Description</Label>
+                            <Label htmlFor="description-1" className="font-medium">Description</Label>
                             <Input
                                 id='description-1'
                                 name='description'
                                 value={description}
+                                placeholder="What needs to be done?"
+                                className="mt-1"
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Field>
                         <Field>
-                            <Select onValueChange={(value) => setPriority(Number(value))} value={String(priority)} required>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select priority" />
+                            <Label className="font-medium">Priority</Label>
+                            <Select onValueChange={(value) => setPriority(Number(value))} value={String(priority)}
+                                    required>
+                                <SelectTrigger className="mt-1">
+                                    <SelectValue placeholder="Select priority"/>
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="1">1 - Do it as fast as possible!</SelectItem>
-                                    <SelectItem value="2">2 - Do not waste too much time!</SelectItem>
-                                    <SelectItem value="3">3 - Well, do it later...</SelectItem>
+                                    <SelectItem value="1">🔴 Do it now!</SelectItem>
+                                    <SelectItem value="2">🟡 Normal</SelectItem>
+                                    <SelectItem value="3">🟢 Someday</SelectItem>
                                 </SelectContent>
                             </Select>
                         </Field>
@@ -79,7 +85,7 @@ function TaskForm({task, isOpen, onClose, onCreate}:TaskFormProps){
                         <DialogClose asChild>
                             <Button variant='outline'>Cancel</Button>
                         </DialogClose>
-                        <Button type='submit'>Save changes</Button>
+                        <Button type='submit'>Save</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

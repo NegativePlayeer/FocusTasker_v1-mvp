@@ -1,15 +1,10 @@
-import type { Task } from "@/types/task.ts";
-import { motion } from "framer-motion";
+import type { Task } from "@/types/task.ts"
+import { motion } from "framer-motion"
 
 interface TaskCardProps {
-    task: Task,
+    task: Task
     onClick: () => void
-}
-
-const priorityLabel: Record<number, string> = {
-    1: 'Do it right now!',
-    2: 'Eye catching, but...',
-    3: 'Well... Do it later'
+    onDelete: (taskId: number) => void
 }
 
 const priorityBorder: Record<number, string> = {
@@ -18,18 +13,46 @@ const priorityBorder: Record<number, string> = {
     3: 'border-l-slate-300',
 }
 
-function TaskCard({task, onClick}: TaskCardProps) {
+const priorityLabel: Record<number, string> = {
+    1: '🔴 Do it now!',
+    2: '🟡 Normal',
+    3: '🟢 Someday',
+}
 
+function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
     return (
         <motion.div
-            whileHover={{scale: 1.02}}
-            whileTap={{scale:.98}}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: .98 }}
             onClick={onClick}
-            className={`bg-card border border-border border-l-4 ${priorityBorder[task.priority]} rounded-xl p-4 cursor-pointer shadow-sm`}
+            className={`bg-card border border-border border-l-4 ${priorityBorder[task.priority]} rounded-xl p-4 cursor-pointer shadow-sm transition-opacity ${task.is_completed ? 'opacity-50' : ''}`}
         >
-            <h3 className="font-semibold text-foreground text-base mb-1">{task.title}</h3>
-            <p className="text-muted-foreground text-sm line-clamp-2">{task.description}</p>
-            <span className="text-xs mt-2 inline-block">{priorityLabel[task.priority]}</span>
+            <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                    <h3 className={`font-semibold text-base mb-1 ${task.is_completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                        {task.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm line-clamp-2">{task.description}</p>
+                    <span className="text-xs mt-2 inline-block">{priorityLabel[task.priority]}</span>
+                    {task.subtasks.length > 0 && (
+                        <span className="text-xs text-muted-foreground mt-1 block">
+                            {task.subtasks.filter(s => s.is_completed).length}/{task.subtasks.length} subtasks
+                        </span>
+                    )}
+                </div>
+                {task.is_completed && (
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onDelete(task.id)
+                        }}
+                        className="text-muted-foreground hover:text-destructive transition-colors cursor-pointer text-lg leading-none"
+                    >
+                        ×
+                    </button>
+                )}
+
+            </div>
         </motion.div>
     )
 }

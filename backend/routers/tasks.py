@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, HTTPException
 from database import DB_DEPENDENCY
 from models.task import  Task, Subtask
-from schemas.task import TaskCreate, TaskResponse, TaskUpdate, SubtaskResponse, SubtaskCreate
+from schemas.task import TaskCreate, TaskResponse, TaskUpdate, SubtaskResponse, SubtaskCreate, SubtaskUpdate
 from auth import USER_DEPENDENCY
 
 router = APIRouter()
@@ -70,7 +70,7 @@ async def update_task(
     db.refresh(task)
     return task
 
-@router.post('/tasks/{task_id}/subtasks', response_model=SubtaskResponse)
+@router.post('/tasks/{task_id}/subtasks', status_code=status.HTTP_201_CREATED , response_model=SubtaskResponse)
 async def add_subtask(
         db: DB_DEPENDENCY,
         current_user: USER_DEPENDENCY,
@@ -90,3 +90,28 @@ async def add_subtask(
 
     return subtask_model
 
+@router.put('/tasks/{task_id}/subtasks/{subtask_id}', response_model=SubtaskResponse)
+async def update_subtask(
+        db: DB_DEPENDENCY,
+        current_user: USER_DEPENDENCY,
+        subtask_request: SubtaskUpdate,
+        task_id: int,
+        subtask_id: int
+):
+    task = db.query(Task).filter(Task.owner_id == current_user.get('id'), Task.id == task_id).first()
+
+    if task is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
+
+    subtask = db.query(Subtask).filter(Subtask.task_id == task_id, Subtask.id == subtask_id).first()
+
+    if subtask is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Subtask not found!')
+
+    updated_subtask = subtask_request.model_dump(exclude_unset=True)
+
+    for key, value in updated_subtask.items():
+        setattr(subtask, key, value)
+    db.commit()
+    db.refresh(subtask)
+    return  subtask
