@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/DecomposeModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routers/ai_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routers/ai_features.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Hooks/useTheme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useTheme.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/tasks/TaskForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskForm.tsx" afterDir="false" />
@@ -26,8 +26,8 @@
         <option value="FastAPI main" />
         <option value="FastAPI test_main" />
         <option value="TypeScript File" />
-        <option value="TypeScript JSX File" />
         <option value="Python Script" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -129,7 +129,7 @@
       <workItem from="1775500025024" duration="567000" />
       <workItem from="1775500633014" duration="7030000" />
       <workItem from="1775509704276" duration="486000" />
-      <workItem from="1775588331708" duration="3306000" />
+      <workItem from="1775588331708" duration="5829000" />
     </task>
     <servers />
   </component>

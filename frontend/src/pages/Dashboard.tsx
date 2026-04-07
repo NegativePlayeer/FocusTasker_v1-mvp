@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import type {Task} from '@/types/task.ts'
+import type {Task, DecomposeStep} from '@/types/task.ts'
 import TaskModal from '@/components/tasks/TaskModal.tsx'
 import {Button} from "@/components/ui/button.tsx";
 import TaskForm from "@/components/tasks/TaskForm.tsx";
@@ -16,9 +16,10 @@ function Dashboard() {
     const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false)
     const [isEditOpen, setIsEditOpen] = useState<boolean>(false)
     const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
+    const [decomposedSteps, setDecomposedSteps] = useState<DecomposeStep[]>([])
+    const [isDecomposedModal, setIsDecomposedModal] = useState<boolean>(false)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
-
 
     const fetchTasks = async () => {
         const token = localStorage.getItem('token')
@@ -98,16 +99,6 @@ function Dashboard() {
         navigate('/login')
     }
 
-    // const handleComplete = async (taskId: number, is_completed: boolean) => {
-    //     const token = localStorage.getItem('token')
-    //     await fetch(`http://localhost:8000/tasks/${taskId}`, {
-    //         method: 'PUT',
-    //         headers: {'Authorization': `Bearer ${token}`, 'Content-type': 'application/json'},
-    //         body: JSON.stringify({is_completed})
-    //     })
-    //     await fetchTasks()
-    // }
-
     const handleAddSubtask = async (taskId: number, title: string) => {
         const token = localStorage.getItem('token')
         await fetch(`http://localhost:8000/tasks/${taskId}/subtasks`, {
@@ -152,6 +143,21 @@ function Dashboard() {
         await fetchTasks()
     }
 
+    const handleDecompose = async (taskId: number) => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/ai/decompose/${taskId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'aplication/json'
+            }
+        })
+        if(response.ok){
+            const data = await response.json()
+            setDecomposedSteps(data)
+            setIsDecomposedModal(true)
+        }
+    }
 
 
     useEffect(() => {

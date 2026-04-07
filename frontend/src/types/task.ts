@@ -13,3 +13,8 @@ export interface Task{
     subtasks: Subtask[]
 }
 
+export interface DecomposeStep {
+    step: number
+    title: string
+    duration_minutes: number
+}
