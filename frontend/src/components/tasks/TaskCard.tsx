@@ -5,6 +5,7 @@ interface TaskCardProps {
     task: Task
     onClick: () => void
     onDelete: (taskId: number) => void
+    onDecompose: (taskId: number) => void
 }
 
 const priorityBorder: Record<number, string> = {
@@ -19,13 +20,13 @@ const priorityLabel: Record<number, string> = {
     3: '🟢 Someday',
 }
 
-function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
+function TaskCard({ task, onClick, onDelete, onDecompose }: TaskCardProps) {
     return (
         <motion.div
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: .98 }}
             onClick={onClick}
-            className={`bg-card border border-border border-l-4 ${priorityBorder[task.priority]} rounded-xl p-4 cursor-pointer shadow-sm transition-opacity ${task.is_completed ? 'opacity-50' : ''}`}
+            className={`flex flex-col justify-between bg-card border border-border border-l-4 ${priorityBorder[task.priority]} rounded-xl p-4 cursor-pointer shadow-sm transition-opacity ${task.is_completed ? 'opacity-50' : ''}`}
         >
             <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
@@ -51,8 +52,19 @@ function TaskCard({ task, onClick, onDelete }: TaskCardProps) {
                         ×
                     </button>
                 )}
-
             </div>
+           <div className="flex justify-end mt-2">
+               <button
+                   onClick={(e) => {
+                       e.stopPropagation()
+                       onDecompose(task.id)
+                   }}
+                   className="text-xs border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-md px-2 py-1"
+                   disabled={task.is_completed}
+               >
+                   Decompose
+               </button>
+           </div>
         </motion.div>
     )
 }
