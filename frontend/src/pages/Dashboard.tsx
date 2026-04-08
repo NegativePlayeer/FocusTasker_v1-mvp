@@ -20,6 +20,7 @@ function Dashboard() {
     const [decomposedSteps, setDecomposedSteps] = useState<DecomposeStep[]>([])
     const [isDecomposedModal, setIsDecomposedModal] = useState<boolean>(false)
     const [taskToDecompose, setTaskToDecompose] = useState<number | null>(null)
+    const [isDecomposing, setIsDecomposing] = useState<boolean>(false)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
 
@@ -146,6 +147,7 @@ function Dashboard() {
     }
 
     const handleDecompose = async (taskId: number) => {
+        setIsDecomposing(true)
         const token = localStorage.getItem('token')
         const response = await fetch(`http://localhost:8000/ai/decompose/${taskId}`, {
             method: 'POST',
@@ -160,6 +162,7 @@ function Dashboard() {
             setIsDecomposedModal(true)
             setTaskToDecompose(taskId)
         }
+        setIsDecomposing(false)
     }
 
     const handleAccept = async (taskId: number) => {
@@ -206,10 +209,14 @@ function Dashboard() {
                     animate={{opacity: 1}}
                 >
                     {tasks.map(task => (
-                        <TaskCard key={task.id} task={task} onDecompose={handleDecompose} onDelete={handleDeleteTask} onClick={() => {
-                            setSelectedTask(task)
-                            setIsTaskModalOpen(true)
-                        }}/>
+                        <TaskCard key={task.id} task={task} onDecompose={handleDecompose} onDelete={handleDeleteTask}
+                                  onClick={() => {
+                                      setSelectedTask(task)
+                                      setIsTaskModalOpen(true)
+
+                                  }}
+                                  isDecomposing={isDecomposing}
+                        />
 
                     ))}
                 </motion.div>

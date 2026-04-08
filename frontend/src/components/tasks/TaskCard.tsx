@@ -1,11 +1,13 @@
 import type { Task } from "@/types/task.ts"
 import { motion } from "framer-motion"
+import { Spinner } from "@/components/ui/spinner"
 
 interface TaskCardProps {
     task: Task
     onClick: () => void
     onDelete: (taskId: number) => void
     onDecompose: (taskId: number) => void
+    isDecomposing: boolean
 }
 
 const priorityBorder: Record<number, string> = {
@@ -20,7 +22,7 @@ const priorityLabel: Record<number, string> = {
     3: '🟢 Someday',
 }
 
-function TaskCard({ task, onClick, onDelete, onDecompose }: TaskCardProps) {
+function TaskCard({ task, onClick, onDelete, onDecompose, isDecomposing }: TaskCardProps) {
     return (
         <motion.div
             whileHover={{ scale: 1.02 }}
@@ -62,7 +64,7 @@ function TaskCard({ task, onClick, onDelete, onDecompose }: TaskCardProps) {
                    className="text-xs border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-md px-2 py-1"
                    disabled={task.is_completed}
                >
-                   Decompose
+                   {isDecomposing ? <span><Spinner /> decomposing... </span> : <p>decompose</p>}
                </button>
            </div>
         </motion.div>
