@@ -7,7 +7,7 @@ interface TaskCardProps {
     onClick: () => void
     onDelete: (taskId: number) => void
     onDecompose: (taskId: number) => void
-    isDecomposing: boolean
+    decomposingTaskId: number | null
 }
 
 const priorityBorder: Record<number, string> = {
@@ -22,7 +22,7 @@ const priorityLabel: Record<number, string> = {
     3: '🟢 Someday',
 }
 
-function TaskCard({ task, onClick, onDelete, onDecompose, isDecomposing }: TaskCardProps) {
+function TaskCard({ task, onClick, onDelete, onDecompose, decomposingTaskId }: TaskCardProps) {
     return (
         <motion.div
             whileHover={{ scale: 1.02 }}
@@ -62,9 +62,9 @@ function TaskCard({ task, onClick, onDelete, onDecompose, isDecomposing }: TaskC
                        onDecompose(task.id)
                    }}
                    className="text-xs border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-md px-2 py-1"
-                   disabled={task.is_completed}
+                   disabled={task.is_completed || decomposingTaskId == task.id}
                >
-                   {isDecomposing ? <span><Spinner /> decomposing... </span> : <p>decompose</p>}
+                   {decomposingTaskId == task.id ? <span className='flex gap-2'><Spinner /> Decomposing... </span> : <>Decompose</>}
                </button>
            </div>
         </motion.div>

@@ -20,7 +20,7 @@ function Dashboard() {
     const [decomposedSteps, setDecomposedSteps] = useState<DecomposeStep[]>([])
     const [isDecomposedModal, setIsDecomposedModal] = useState<boolean>(false)
     const [taskToDecompose, setTaskToDecompose] = useState<number | null>(null)
-    const [isDecomposing, setIsDecomposing] = useState<boolean>(false)
+    const [decomposingTaskId, setDecomposingTaskId] = useState<number | null>(null)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
 
@@ -130,24 +130,24 @@ function Dashboard() {
             body: JSON.stringify({is_completed})
         })
 
-        if (is_completed) {
-            const task = tasks.find(t => t.id === taskId)
-            if (task) {
-                await Promise.all(task.subtasks.map(subtask =>
-                    fetch(`http://localhost:8000/tasks/${taskId}/subtasks/${subtask.id}`, {
-                        method: 'PUT',
-                        headers: {'Authorization': `Bearer ${token}`, 'Content-type': 'application/json'},
-                        body: JSON.stringify({is_completed: true})
-                    })
-                ))
-            }
+
+        const task = tasks.find(t => t.id === taskId)
+        if (task) {
+            await Promise.all(task.subtasks.map(subtask =>
+                fetch(`http://localhost:8000/tasks/${taskId}/subtasks/${subtask.id}`, {
+                    method: 'PUT',
+                    headers: {'Authorization': `Bearer ${token}`, 'Content-type': 'application/json'},
+                    body: JSON.stringify({is_completed: is_completed})
+                })
+            ))
         }
+
 
         await fetchTasks()
     }
 
     const handleDecompose = async (taskId: number) => {
-        setIsDecomposing(true)
+        setDecomposingTaskId(taskId)
         const token = localStorage.getItem('token')
         const response = await fetch(`http://localhost:8000/ai/decompose/${taskId}`, {
             method: 'POST',
@@ -162,7 +162,7 @@ function Dashboard() {
             setIsDecomposedModal(true)
             setTaskToDecompose(taskId)
         }
-        setIsDecomposing(false)
+        setDecomposingTaskId(null)
     }
 
     const handleAccept = async (taskId: number) => {
@@ -197,6 +197,11 @@ function Dashboard() {
 
     return (
         <div className='min-h-screen bg-background'>
+            {decomposingTaskId && (
+                <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
+                    <p className="text-white text-lg font-semibold">Decomposing your task...</p>
+                </div>
+            )}
             <Navbar isDark={isDark} onToggleTheme={toggle} onLogout={handleLogout}/>
             <main className="p-8">
                 <div className="flex items-center justify-between mb-6">
@@ -215,7 +220,7 @@ function Dashboard() {
                                       setIsTaskModalOpen(true)
 
                                   }}
-                                  isDecomposing={isDecomposing}
+                                  decomposingTaskId={decomposingTaskId}
                         />
 
                     ))}
@@ -252,6 +257,7 @@ function Dashboard() {
                     onAccept={()=>handleAccept(taskToDecompose)}
                     onRegenerate={()=>handleDecompose(taskToDecompose)}
                     onCancel={()=>setIsDecomposedModal(false)}
+                    decomposedTaskId={decomposingTaskId}
                 />
             )}
         </div>

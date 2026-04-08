@@ -34,7 +34,7 @@ async def accept_decomposed_task(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
 
     for step in task_request.steps:
-        subtask_title = f"{step.title} (about: {step.duration_minutes})"
+        subtask_title = f"{step.title} (about: {step.duration_minutes} mins)"
         subtask_model = Subtask(title=subtask_title, task_id=task_id)
         db.add(subtask_model)
         db.commit()
