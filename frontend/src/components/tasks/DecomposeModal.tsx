@@ -23,7 +23,7 @@ function DecomposeModal({isOpen, steps, onAccept, onRegenerate, onCancel}: Decom
         <Dialog open={isOpen} onOpenChange={onCancel}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Decomposed task</DialogTitle>
+                    <DialogTitle className='text-foreground!'>Decomposed task</DialogTitle>
                     <DialogDescription>Say hello to your subtasks!</DialogDescription>
                 </DialogHeader>
                 <div className='mx-4'>
@@ -37,10 +37,10 @@ function DecomposeModal({isOpen, steps, onAccept, onRegenerate, onCancel}: Decom
                 </div>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline" onClick={() => onCancel()}>Close</Button>
+                        <Button className='cursor-pointer'  variant="outline" onClick={() => onCancel()}>Close</Button>
                     </DialogClose>
-                    <Button variant="outline" onClick={() => onRegenerate()}>Regenerate</Button>
-                    <Button variant="outline" onClick={() => onAccept()}>Accept</Button>
+                    <Button className='cursor-pointer' variant="outline" onClick={() => onRegenerate()}>Regenerate</Button>
+                    <Button className='cursor-pointer'  variant="outline" onClick={() => onAccept()}>Accept</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

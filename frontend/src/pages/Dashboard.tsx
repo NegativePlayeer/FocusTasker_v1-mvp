@@ -8,6 +8,7 @@ import {useTheme} from '@/hooks/useTheme.ts'
 import Navbar from "@/components/layout/Navbar.tsx";
 import {motion} from "framer-motion";
 import TaskCard from "@/components/tasks/TaskCard.tsx";
+import DecomposeModal from "@/components/tasks/DecomposeModal.tsx";
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
@@ -18,6 +19,7 @@ function Dashboard() {
     const [taskToEdit, setTaskToEdit] = useState<Task | null>(null)
     const [decomposedSteps, setDecomposedSteps] = useState<DecomposeStep[]>([])
     const [isDecomposedModal, setIsDecomposedModal] = useState<boolean>(false)
+    const [taskToDecompose, setTaskToDecompose] = useState<number | null>(null)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
 
@@ -149,13 +151,32 @@ function Dashboard() {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-type': 'aplication/json'
+                'Content-type': 'application/json'
             }
         })
         if(response.ok){
             const data = await response.json()
             setDecomposedSteps(data)
             setIsDecomposedModal(true)
+            setTaskToDecompose(taskId)
+        }
+    }
+
+    const handleAccept = async (taskId: number) => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`http://localhost:8000/ai/decompose/${taskId}/accept`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({steps: decomposedSteps})
+        })
+        if(response.ok){
+            setIsDecomposedModal(false)
+            setTaskToDecompose(null)
+            setDecomposedSteps([])
+            await fetchTasks()
         }
     }
 
@@ -185,7 +206,7 @@ function Dashboard() {
                     animate={{opacity: 1}}
                 >
                     {tasks.map(task => (
-                        <TaskCard key={task.id} task={task} onDelete={handleDeleteTask} onClick={() => {
+                        <TaskCard key={task.id} task={task} onDecompose={handleDecompose} onDelete={handleDeleteTask} onClick={() => {
                             setSelectedTask(task)
                             setIsTaskModalOpen(true)
                         }}/>
@@ -214,6 +235,16 @@ function Dashboard() {
                     isOpen={isEditOpen}
                     onClose={() => setIsEditOpen(false)}
                     onCreate={handleTaskEdit}
+                />
+            )}
+
+            {taskToDecompose && (
+                <DecomposeModal
+                    isOpen={isDecomposedModal}
+                    steps={decomposedSteps}
+                    onAccept={()=>handleAccept(taskToDecompose)}
+                    onRegenerate={()=>handleDecompose(taskToDecompose)}
+                    onCancel={()=>setIsDecomposedModal(false)}
                 />
             )}
         </div>
