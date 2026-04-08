@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from database import DB_DEPENDENCY
 from auth import USER_DEPENDENCY
 from models.task import Task, Subtask
+from models.user import User
 from agents.task_decomposer import decompose_task as dt
 from schemas.task import DecomposeAccept
 
@@ -14,11 +15,12 @@ async def decompose_task(
         task_id: int
 ):
     task = db.query(Task).filter(Task.owner_id == current_user.get('id'), Task.id == task_id).first()
+    user = db.query(User).filter(User.id == current_user.get('id')).first()
     if task is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Task not found!')
     title = task.title
 
-    decomposed_task = dt(title)
+    decomposed_task = dt(title, user)
 
     return decomposed_task['steps']
 

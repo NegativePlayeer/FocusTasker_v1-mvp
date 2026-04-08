@@ -17,7 +17,7 @@ def decompose_task(title: str, user: UserResponse):
         system=f"""You are an expert/coach in adhd, your goal is to decompose my task into smaller parts to start easier. 
          User preferences: {user.preferences}.
          User struggles: {user.struggles}
-         Tasks should last no longer than 10 minutes and contain only 5-7 steps and also title should not have more than 10 words.
+         Tasks should last no longer than 20 minutes and contain only 7-8 steps and also title should not have more than 15 words.
 
         Return ONLY the raw JSON, no markdown, no code blocks, no explanation in this format:
         {{
