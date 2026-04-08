@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input.tsx";
 
 interface DecomposeModalProps {
     isOpen: boolean
@@ -21,7 +20,7 @@ interface DecomposeModalProps {
 
 function DecomposeModal({isOpen, steps, onAccept, onRegenerate, onCancel}: DecomposeModalProps){
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={onCancel}>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Decomposed task</DialogTitle>
@@ -29,21 +28,21 @@ function DecomposeModal({isOpen, steps, onAccept, onRegenerate, onCancel}: Decom
                 </DialogHeader>
                 <div className='mx-4'>
                     <ol>
-                        {steps.map((step, index) => (
-                            <li key={index} className='flex gap-2'>
-                                <span>{index} {step.title}</span>
+                        {steps.map((step) => (
+                            <li key={step.step} className='flex gap-2'>
+                                <span>{step.step} {step.title}</span>
                             </li>
                         ))}
                     </ol>
                 </div>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="outline" onClick={() => onCancel()}>Close</Button>
+                    </DialogClose>
+                    <Button variant="outline" onClick={() => onRegenerate()}>Regenerate</Button>
+                    <Button variant="outline" onClick={() => onAccept()}>Accept</Button>
+                </DialogFooter>
             </DialogContent>
-            <DialogFooter>
-                <DialogClose asChild>
-                    <Button variant="outline">Close</Button>
-                    <Button variant="outline">Regenerate</Button>
-                    <Button variant="outline">Accept</Button>
-                </DialogClose>
-            </DialogFooter>
         </Dialog>
     )
 }
