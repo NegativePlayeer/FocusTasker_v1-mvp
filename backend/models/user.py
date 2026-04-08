@@ -14,4 +14,6 @@ class User(Base):
     hashed_password = Column(String)
     role = Column(String)
     is_active = Column(Boolean, default=True)
+    preferences = Column(String)
+    struggles = Column(String)
     tasks = relationship('Task', back_populates='owner')

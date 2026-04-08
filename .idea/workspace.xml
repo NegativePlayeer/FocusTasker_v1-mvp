@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4720dfcc-4a7a-49e8-acab-a7d14f13717b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routers/ai_features.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routers/ai_features.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/agents/task_decomposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/agents/task_decomposer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/tasks/DecomposeModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tasks/DecomposeModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/tasks/TaskCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/tasks/TaskCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Dashboard.tsx" afterDir="false" />
@@ -126,7 +127,7 @@
       <workItem from="1775588331708" duration="5829000" />
       <workItem from="1775641604238" duration="64000" />
       <workItem from="1775646346708" duration="4831000" />
-      <workItem from="1775669425513" duration="3063000" />
+      <workItem from="1775669425513" duration="5633000" />
     </task>
     <servers />
   </component>
