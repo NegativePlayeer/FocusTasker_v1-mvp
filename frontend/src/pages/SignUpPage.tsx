@@ -23,6 +23,8 @@ function SignUpPage() {
     const [password, setPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
     const [step, setStep] = useState<1 | 2>(1)
+    const [selectedStruggles, setSelectedStruggles] = useState<string[]>([])
+    const [selectedPreferences, setSelectedPreferences] = useState<string[]>([])
 
     const checkPassword = (password: string, rePassword: string): boolean => {
         return password == rePassword;
@@ -45,6 +47,18 @@ function SignUpPage() {
             navigate('/login')
         }
     }
+
+    const STRUGGLES_TAGS = [
+        'Procrastination', 'Distraction', 'Task initiation',
+        'Time blindness', 'Forgetfulness', 'Decision paralysis',
+        'Hyperfocus', 'Overwhelm'
+    ]
+
+    const PREFERENCES_TAGS = [
+        'Short sessions (25 min)', 'Frequent breaks', 'Step-by-step instructions',
+        'Visual progress', 'Background music', 'Morning focus',
+        'Evening focus', 'Pomodoro technique'
+    ]
 
     return (
         <AnimatePresence mode='wait'>
@@ -133,8 +147,11 @@ function SignUpPage() {
                                     </div>
 
                                 </CardContent>
-                                <Button type='button' onClick={() => setStep(2)}>Set my preferences</Button>
                                 <CardFooter className='flex-col gap-2'>
+                                    <Button type='button' variant='outline' className="cursor-pointer w-full"
+                                            onClick={() => setStep(2)}>
+                                        Set my preferences →
+                                    </Button>
                                     <Button type='submit' className="cursor-pointer w-full">Sign up</Button>
                                 </CardFooter>
                             </form>
@@ -145,12 +162,72 @@ function SignUpPage() {
             {step === 2 && (
                 <motion.div
                     key='step2'
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100}}
-                    transition={{ duration: 0.3 }}
-                    >
-                    {}
+                    initial={{opacity: 0, x: 100}}
+                    animate={{opacity: 1, x: 0}}
+                    exit={{opacity: 0, x: 100}}
+                    transition={{duration: 0.3}}
+                >
+                    {
+                        <div className="min-h-screen bg-background flex items-center justify-center">
+                            <Card className='w-full max-w-md'>
+                                <CardHeader>
+                                    <CardTitle>Your ADHD profile</CardTitle>
+                                    <CardDescription>Select tags that describe you. You can add your own
+                                        too.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="flex flex-col gap-6">
+                                    <div>
+                                        <p className="font-semibold text-sm mb-2">My struggles:</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {STRUGGLES_TAGS.map(tag => (
+                                                <button
+                                                    key={tag}
+                                                    onClick={() => {
+                                                        setSelectedStruggles(prev =>
+                                                            prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+                                                        )
+                                                    }}
+                                                    className={`px-3 py-1 rounded-full text-sm border transition-all cursor-pointer ${
+                                                        selectedStruggles.includes(tag)
+                                                            ? 'bg-sky-500 text-white border-sky-500'
+                                                            : 'bg-transparent text-foreground border-border'
+                                                    }`}
+                                                >
+                                                    {tag}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="font-semibold text-sm mb-2">My preferences:</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {PREFERENCES_TAGS.map(tag => (
+                                                <button
+                                                    key={tag}
+                                                    onClick={() => {
+                                                        setSelectedPreferences(prev =>
+                                                            prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+                                                        )
+                                                    }}
+                                                    className={`px-3 py-1 rounded-full text-sm border transition-all cursor-pointer ${
+                                                        selectedPreferences.includes(tag)
+                                                            ? 'bg-emerald-500 text-white border-emerald-500'
+                                                            : 'bg-transparent text-foreground border-border'
+                                                    }`}
+                                                >
+                                                    {tag}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </CardContent>
+                                <CardFooter className="flex justify-around gap-2 ">
+                                    <Button className='cursor-pointer' variant="outline" onClick={() => setStep(1)}>← Back</Button>
+                                    <Button className="w-1/2 cursor-pointer">Save & Sign up</Button>
+                                </CardFooter>
+                            </Card>
+                        </div>
+                    }
                 </motion.div>
             )}
         </AnimatePresence>
