@@ -30,23 +30,39 @@ function SignUpPage() {
         return password == rePassword;
     }
 
-    const handleSignUp = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!checkPassword(password, confirmPassword)) {
-            console.log('wrong password')
-            return
-        }
-
+    const submitSignUp = async(preferences: string, struggles:string ) => {
         const response = await fetch('http://localhost:8000/users/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, first_name: firstname, surname, username, password, role: 'user'})
+            body: JSON.stringify({email, first_name: firstname, surname, username, password, role: 'user', preferences, struggles})
         })
 
         if (response.ok) {
             navigate('/login')
         }
     }
+
+    const handleSaveAndSignUp = async () => {
+        const preferences = selectedPreferences.join(', ')
+        const struggles = selectedStruggles.join(', ')
+
+        await submitSignUp(preferences, struggles)
+    }
+
+    const handleSignUp = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!checkPassword(password, confirmPassword)) {
+            console.log('wrong password')
+            return
+        }
+        await submitSignUp('', '')
+    }
+
+    const canProceedToStep2 = () => {
+    return [email, firstname, surname, username, password, confirmPassword].every(field => field.trim() !== '')
+        && checkPassword(password, confirmPassword)
+}
+
 
     const STRUGGLES_TAGS = [
         'Procrastination', 'Distraction', 'Task initiation',
@@ -90,6 +106,7 @@ function SignUpPage() {
                                                 id='email'
                                                 type='email'
                                                 className="cursor-pointer"
+                                                value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 required
                                             />
@@ -100,6 +117,7 @@ function SignUpPage() {
                                                 id='firstname'
                                                 type='text'
                                                 className="cursor-pointer"
+                                                value={firstname}
                                                 onChange={(e) => setFirstname(e.target.value)}
                                                 required
                                             />
@@ -110,6 +128,7 @@ function SignUpPage() {
                                                 id='surname'
                                                 type='text'
                                                 className="cursor-pointer"
+                                                value={surname}
                                                 onChange={(e) => setSurname(e.target.value)}
                                                 required
                                             />
@@ -120,6 +139,7 @@ function SignUpPage() {
                                                 id='username'
                                                 type='text'
                                                 className="cursor-pointer"
+                                                value={username}
                                                 onChange={(e) => setUsername(e.target.value)}
                                                 required
                                             />
@@ -130,6 +150,7 @@ function SignUpPage() {
                                                 id='password'
                                                 type='password'
                                                 className="cursor-pointer"
+                                                value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 required
                                             />
@@ -140,6 +161,7 @@ function SignUpPage() {
                                                 id='confirm-password'
                                                 type='password'
                                                 className="cursor-pointer"
+                                                value={confirmPassword}
                                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                                 required
                                             />
@@ -149,7 +171,7 @@ function SignUpPage() {
                                 </CardContent>
                                 <CardFooter className='flex-col gap-2'>
                                     <Button type='button' variant='outline' className="cursor-pointer w-full"
-                                            onClick={() => setStep(2)}>
+                                            onClick={() => canProceedToStep2() && setStep(2)}>
                                         Set my preferences →
                                     </Button>
                                     <Button type='submit' className="cursor-pointer w-full">Sign up</Button>
@@ -223,7 +245,8 @@ function SignUpPage() {
                                 </CardContent>
                                 <CardFooter className="flex justify-around gap-2 ">
                                     <Button className='cursor-pointer' variant="outline" onClick={() => setStep(1)}>← Back</Button>
-                                    <Button className="w-1/2 cursor-pointer">Save & Sign up</Button>
+                                    <Button className="w-1/2 cursor-pointer" onClick={handleSaveAndSignUp}>Save & Sign up
+                                    </Button>
                                 </CardFooter>
                             </Card>
                         </div>
