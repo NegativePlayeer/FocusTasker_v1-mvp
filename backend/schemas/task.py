@@ -34,3 +34,14 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = None
     priority: Optional[int] = None
     is_completed: Optional[bool] = None
+
+class SubtaskUpdate(BaseModel):
+    title: Optional[str] = None
+    is_completed: Optional[bool] = None
+
+class DecomposeStep(BaseModel):
+    title: str
+    duration_minutes: int
+
+class DecomposeAccept(BaseModel):
+    steps: list[DecomposeStep]

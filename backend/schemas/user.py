@@ -1,4 +1,6 @@
+from typing import Optional
 from pydantic import BaseModel, ConfigDict
+
 class UserCreate(BaseModel):
     email: str
     username: str
@@ -6,6 +8,8 @@ class UserCreate(BaseModel):
     surname: str
     password: str
     role: str
+    preferences: Optional[str] = None
+    struggles: Optional[str] = None
 
 class UserResponse(BaseModel):
     id: int
@@ -15,5 +19,7 @@ class UserResponse(BaseModel):
     surname: str
     role: str
     is_active: bool
+    preferences: Optional[str] = None
+    struggles: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
