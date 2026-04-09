@@ -30,22 +30,41 @@ function SignUpPage() {
         return password == rePassword;
     }
 
-    const handleSignUp = async (e: React.FormEvent) => {
-        e.preventDefault()
+    const submitSignUp = async (preferences: string, struggles: string) => {
         if (!checkPassword(password, confirmPassword)) {
-            console.log('wrong password')
+            alert('Passwords do not match!')
             return
         }
 
         const response = await fetch('http://localhost:8000/users/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, first_name: firstname, surname, username, password, role: 'user'})
+            body: JSON.stringify({
+                email,
+                first_name: firstname,
+                surname,
+                username,
+                password,
+                role: 'user',
+                preferences: preferences || null,
+                struggles: struggles || null,
+            })
         })
 
         if (response.ok) {
             navigate('/login')
         }
+    }
+
+    const handleSignUp = async (e: React.FormEvent) => {
+        e.preventDefault()
+        await submitSignUp('', '')
+    }
+
+    const handleSaveAndSignUp = async () => {
+        const struggles = selectedStruggles.join(', ')
+        const preferences = selectedPreferences.join(', ')
+        await submitSignUp(preferences, struggles)
     }
 
     const STRUGGLES_TAGS = [
@@ -223,7 +242,7 @@ function SignUpPage() {
                                 </CardContent>
                                 <CardFooter className="flex justify-around gap-2 ">
                                     <Button className='cursor-pointer' variant="outline" onClick={() => setStep(1)}>← Back</Button>
-                                    <Button className="w-1/2 cursor-pointer">Save & Sign up</Button>
+                                    <Button className="w-1/2 cursor-pointer" onClick={handleSaveAndSignUp}>Save & Sign up</Button>
                                 </CardFooter>
                             </Card>
                         </div>
