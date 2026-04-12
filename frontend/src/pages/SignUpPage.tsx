@@ -90,7 +90,7 @@ function SignUpPage() {
                     <div
                         className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
                         <div className="mb-6 text-center">
-                            <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100 tracking-tight">FocusTracker</h1>
+                            <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100 tracking-tight">FocusTasker</h1>
                             <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Your calm space to get things
                                 done</p>
                         </div>
@@ -228,7 +228,7 @@ function SignUpPage() {
                     <div
                         className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
                         <div className="mb-6 text-center">
-                            <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100! tracking-tight">FocusTracker</h1>
+                            <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100! tracking-tight">FocusTasker</h1>
                             <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Your calm space to get things
                                 done</p>
                         </div>

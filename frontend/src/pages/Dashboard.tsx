@@ -156,7 +156,7 @@ function Dashboard() {
                 'Content-type': 'application/json'
             }
         })
-        if(response.ok){
+        if (response.ok) {
             const data = await response.json()
             setDecomposedSteps(data)
             setIsDecomposedModal(true)
@@ -175,7 +175,7 @@ function Dashboard() {
             },
             body: JSON.stringify({steps: decomposedSteps})
         })
-        if(response.ok){
+        if (response.ok) {
             setIsDecomposedModal(false)
             setTaskToDecompose(null)
             setDecomposedSteps([])
@@ -196,7 +196,8 @@ function Dashboard() {
     }, [tasks]);
 
     return (
-        <div className='min-h-screen bg-background'>
+        <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
+
             {decomposingTaskId && (
                 <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
                     <p className="text-white text-lg font-semibold">Decomposing your task...</p>
@@ -205,14 +206,22 @@ function Dashboard() {
             <Navbar isDark={isDark} onToggleTheme={toggle} onLogout={handleLogout}/>
             <main className="p-8">
                 <div className="flex items-center justify-between mb-6">
-                    <h1 className="text-2xl font-bold text-foreground!">My tasks</h1>
-                    <Button onClick={() => setIsOpen(true)}>New task</Button>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">My tasks</p>
+                    <Button onClick={() => setIsOpen(true)} className='bg-emerald-500 text-foreground'>New task</Button>
                 </div>
                 <motion.div
                     className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                 >
+                    {tasks.length === 0 && (
+                        <div className="flex flex-col items-center justify-center py-24 text-center">
+                            <p className="text-slate-400 dark:text-slate-500 text-sm">No tasks yet.</p>
+                            <p className="text-slate-300 dark:text-slate-600 text-xs mt-1">Click "New task" to get
+                                started.</p>
+                        </div>
+                    )}
+
                     {tasks.map(task => (
                         <TaskCard key={task.id} task={task} onDecompose={handleDecompose} onDelete={handleDeleteTask}
                                   onClick={() => {
@@ -254,9 +263,9 @@ function Dashboard() {
                 <DecomposeModal
                     isOpen={isDecomposedModal}
                     steps={decomposedSteps}
-                    onAccept={()=>handleAccept(taskToDecompose)}
-                    onRegenerate={()=>handleDecompose(taskToDecompose)}
-                    onCancel={()=>setIsDecomposedModal(false)}
+                    onAccept={() => handleAccept(taskToDecompose)}
+                    onRegenerate={() => handleDecompose(taskToDecompose)}
+                    onCancel={() => setIsDecomposedModal(false)}
                     decomposedTaskId={decomposingTaskId}
                 />
             )}
