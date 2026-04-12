@@ -1,22 +1,12 @@
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
-import {Button} from "@/components/ui/button"
 import React, {useState} from "react";
 import {useNavigate} from 'react-router-dom'
-
+import {Input} from "@/components/ui/input"
+import {Button} from "@/components/ui/button"
 
 function LoginPage() {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [error, setError] = useState<string>('')
     const navigate = useNavigate()
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -36,64 +26,60 @@ function LoginPage() {
             localStorage.setItem('token', data.access_token)
             navigate('/dashboard')
         } else {
-            console.log('Wrong username or password, try again!')
+            setError('Wrong username or password')
         }
     }
+
     return (
-        <div className="min-h-screen bg-background flex items-center justify-center">
-            <Card className="w-full max-w-sm">
-                <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
-                    <CardDescription>
-                        Enter your username below to login to your account
-                    </CardDescription>
-                    <CardAction>
-                        <Button variant="link" onClick={() => navigate('/signup')}>Sign Up</Button>
-                    </CardAction>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleLogin}>
-                        <div className="flex flex-col gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="username">Username</Label>
-                                <Input
-                                    id="username"
-                                    type="text"
-                                    placeholder="Hello username..."
-                                    required
-                                    className="cursor-pointer"
-                                    onChange={(e) => setUsername(e.target.value)}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                    <a
-                                        href="#"
-                                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                                    >
-                                        Forgot your password?
-                                    </a>
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    required className="cursor-pointer"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
+            <div className="mb-8 text-center">
+                <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100! tracking-tight">FocusTracker</h1>
+                <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">Your calm space to get things done</p>
+            </div>
+
+            <div className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                <h2 className="text-lg font-medium text-slate-700 dark:text-slate-200! mb-6">Welcome back</h2>
+
+                <form onSubmit={handleLogin} className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-sm text-slate-500 dark:text-slate-400" htmlFor="username">Username</label>
+                        <Input
+                            id="username"
+                            type="text"
+                            required
+                            className="h-11 rounded-xl bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm text-slate-500 dark:text-slate-400" htmlFor="password">Password</label>
+                            <a href="#" className="text-xs text-emerald-500 hover:text-emerald-600 transition-colors">Forgot password?</a>
                         </div>
-                        <CardFooter className="flex-col gap-2">
-                            <Button
-                                type="submit"
-                                className="w-full cursor-pointer"
-                            >
-                                Login
-                            </Button>
-                        </CardFooter>
-                    </form>
-                </CardContent>
-            </Card>
+                        <Input
+                            id="password"
+                            type="password"
+                            required
+                            className="h-11 rounded-xl bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+
+                    {error && <p className="text-red-400 text-xs">{error}</p>}
+
+                    <Button type="submit" className="mt-2 h-11 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl cursor-pointer w-full">
+                        Login
+                    </Button>
+                </form>
+
+                <p className="text-center text-sm text-slate-400 dark:text-slate-500 mt-6">
+                    No account?{' '}
+                    <button onClick={() => navigate('/signup')} className="text-emerald-500 hover:text-emerald-600 transition-colors cursor-pointer">
+                        Sign up
+                    </button>
+                </p>
+            </div>
         </div>
     )
 }
