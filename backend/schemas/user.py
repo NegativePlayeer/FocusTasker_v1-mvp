@@ -23,3 +23,7 @@ class UserResponse(BaseModel):
     struggles: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+class UserProfileUpdate(BaseModel):
+    preferences: Optional[str] = None
+    struggles: Optional[str] = None

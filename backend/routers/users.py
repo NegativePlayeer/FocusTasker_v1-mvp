@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException
-from schemas.user import UserCreate,UserResponse
+from schemas.user import UserCreate, UserResponse, UserProfileUpdate
 from database import DB_DEPENDENCY
 from models.user import User
 from auth import hash_password, USER_DEPENDENCY
@@ -34,3 +34,20 @@ async def get_me(
     user_model = db.query(User).filter(User.id == current_user.get('id')).first()
 
     return user_model
+
+@router.put("/users/me", response_model=UserResponse)
+async def update_preferences(
+        db: DB_DEPENDENCY,
+        current_user: USER_DEPENDENCY,
+        user_request:UserProfileUpdate
+):
+    user_model = db.query(User).filter(User.id == current_user.get('id')).first()
+
+    if user_model is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
+
+    updated_preferences = user_request.model_dump(exclude_unset=True)
+    for key, value in updated_preferences.items():
+        setattr(user_model, key, value)
+    db.commit()
+    db.refresh(user_model)

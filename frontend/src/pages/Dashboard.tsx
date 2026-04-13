@@ -9,6 +9,8 @@ import Navbar from "@/components/layout/Navbar.tsx";
 import {motion} from "framer-motion";
 import TaskCard from "@/components/tasks/TaskCard.tsx";
 import DecomposeModal from "@/components/tasks/DecomposeModal.tsx";
+import type {User} from "@/types/User.ts";
+import UserProfileModal from "@/components/user/UserProfileModal.tsx";
 
 function Dashboard() {
     const [tasks, setTasks] = useState<Task[]>([])
@@ -21,6 +23,8 @@ function Dashboard() {
     const [isDecomposedModal, setIsDecomposedModal] = useState<boolean>(false)
     const [taskToDecompose, setTaskToDecompose] = useState<number | null>(null)
     const [decomposingTaskId, setDecomposingTaskId] = useState<number | null>(null)
+    const [user, setUser] = useState<User | null>(null)
+    const [isUserProfileModal,setIsUserProfileModal] = useState<boolean>(false)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
 
@@ -37,6 +41,22 @@ function Dashboard() {
             const data = await response.json()
             setTasks(data)
         }
+    }
+
+    const fetchUser = async () => {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:8000/users/me', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        if(response.ok){
+            const data = await response.json()
+            setUser(data)
+        }
+
     }
 
     const handleTaskCreating = async (title: string, description: string, priority: number) => {
@@ -183,9 +203,27 @@ function Dashboard() {
         }
     }
 
+    const handleSaveProfile = async (preferences: string, struggles: string) => {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://localhost:8000/users/me', {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({preferences, struggles})
+        })
+
+        if(response.ok){
+            setIsUserProfileModal(false)
+            await fetchUser()
+        }
+    }
+
 
     useEffect(() => {
         void fetchTasks()
+        void fetchUser()
     }, [])
 
     useEffect(() => {
@@ -203,7 +241,7 @@ function Dashboard() {
                     <p className="text-white text-lg font-semibold">Decomposing your task...</p>
                 </div>
             )}
-            <Navbar isDark={isDark} onToggleTheme={toggle} onLogout={handleLogout}/>
+            <Navbar isDark={isDark} onToggleTheme={toggle} onLogout={handleLogout} onOpenProfile={() =>setIsUserProfileModal(true)}/>
             <main className="p-8">
                 <div className="flex items-center justify-between mb-6">
                     <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">My tasks</p>
@@ -267,6 +305,16 @@ function Dashboard() {
                     onRegenerate={() => handleDecompose(taskToDecompose)}
                     onCancel={() => setIsDecomposedModal(false)}
                     decomposedTaskId={decomposingTaskId}
+                />
+            )}
+
+            {user && (
+                <UserProfileModal
+                    isOpen={isUserProfileModal}
+                    onClose={() => setIsUserProfileModal(false)}
+                    currentPreferences={user.preferences ?? ''}
+                    currentStruggles={user.struggles ?? ''}
+                    onSave={handleSaveProfile}
                 />
             )}
         </div>
