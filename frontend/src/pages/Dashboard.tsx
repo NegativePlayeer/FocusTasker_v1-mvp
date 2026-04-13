@@ -25,6 +25,8 @@ function Dashboard() {
     const [decomposingTaskId, setDecomposingTaskId] = useState<number | null>(null)
     const [user, setUser] = useState<User | null>(null)
     const [isUserProfileModal,setIsUserProfileModal] = useState<boolean>(false)
+    const [filterPriority, setFilterPriority] = useState<number | null>(null)
+    const [hideCompleted, setHideCompleted] = useState<boolean>(false)
     const {isDark, toggle} = useTheme()
     const navigate = useNavigate()
 
@@ -233,6 +235,11 @@ function Dashboard() {
         }
     }, [tasks]);
 
+    const filteredTasks = tasks
+    .filter(task => !hideCompleted || !task.is_completed)
+    .filter(task => filterPriority === null || task.priority === filterPriority)
+
+
     return (
         <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
 
@@ -247,6 +254,38 @@ function Dashboard() {
                     <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">My tasks</p>
                     <Button onClick={() => setIsOpen(true)} className='bg-emerald-500 text-foreground'>New task</Button>
                 </div>
+                <div className="flex items-center gap-3 mb-6">
+                    <button
+                        onClick={() => setHideCompleted(prev => !prev)}
+                        className={`px-3 py-1.5 rounded-lg text-sm border transition-all cursor-pointer ${
+                            hideCompleted
+                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-700'
+                                : 'bg-transparent text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-600'
+                        }`}
+                    >
+                        Hide completed
+                    </button>
+
+                    {[
+                        {label: 'All', value: null},
+                        {label: '🔴 Now', value: 1},
+                        {label: '🟡 Normal', value: 2},
+                        {label: '🟢 Someday', value: 3},
+                    ].map(filter => (
+                        <button
+                            key={String(filter.value)}
+                            onClick={() => setFilterPriority(filter.value)}
+                            className={`px-3 py-1.5 rounded-lg text-sm border transition-all cursor-pointer ${
+                                filterPriority === filter.value
+                                    ? 'bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 border-slate-800 dark:border-slate-100'
+                                    : 'bg-transparent text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-600'
+                            }`}
+                        >
+                            {filter.label}
+                        </button>
+                    ))}
+                </div>
+
                 <motion.div
                     className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
                     initial={{opacity: 0}}
@@ -260,7 +299,7 @@ function Dashboard() {
                         </div>
                     )}
 
-                    {tasks.map(task => (
+                    {filteredTasks.map(task => (
                         <TaskCard key={task.id} task={task} onDecompose={handleDecompose} onDelete={handleDeleteTask}
                                   onClick={() => {
                                       setSelectedTask(task)
